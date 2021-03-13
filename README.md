@@ -6,5 +6,5 @@ How to install
 - run migrations
 
 Necessary libraries
-->feedparser
+->feedparser:
   pip install feedparser
