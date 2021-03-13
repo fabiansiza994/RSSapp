@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    {% if messages %}
+       {% for message in messages %}
+            <div class="alert alert-success">{{message}}</div>
+       {% endfor %} 
+    {% endif %}
+    
+    <div class="container">
+        <div class="row">
+            {% if user.email %}
+                <div class="col-lg-2 my-5">
+                    <h3>Mis Sitios</h3>
+                    <ul>
+                        {% for dato in datos %}
+                            <li><a href="{% url 'detail' dato.id %}">{{dato.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class=" my-5 col-lg-6" style="">
+                {% for dato in datos %}
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading{{dato.id}}">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{dato.id}}" aria-expanded="true" aria-controls="collapse{{dato.id}}">
+                                <strong>{{dato.title}}</strong>
+                            </button>
+                            </h2>
+                            <div id="collapse{{dato.id}}" class="accordion-collapse collapse show" aria-labelledby="heading{{dato.id}}" data-bs-parent="#accordionExample">
+                                {% for data in dato.respuesta %}
+                                    <div class="accordion-body">
+                                        <h5 class="card-title">{{data.title}}</h5>
+                                        <p class="card-text">{{data.summary|safe}}</p>
+                                        <a href="{{data.link}}" class="btn btn-primary">Leer más</a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+                <div class="col-lg-3">
+                    <div class="my-5 wrapp">
+                        <form action=" {% url 'rss' %} " method="POST">
+                        {% csrf_token %}
+                            <label>Nombre</label>
+                            <input type="text" class="form-control my-2" name="title" required>
+                            <label>Url</label>
+                            <input type="text" class="form-control my-2" name="rss" required>
+                            <label>Publico?</label>
+                            <select name="public" class="form-control my-3">
+                                <option value="1">Si</option>
+                                <option value="0">No</option>
+                            </select>
+                            <input type="submit" class="btn btn-success" value="agregar" >
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+            <h2>Iniciar sesion</h2>
+            {% endif %}
+        </div>
+    </div>
+
+    
+{% endblock content %}
