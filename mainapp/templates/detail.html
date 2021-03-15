@@ -4,13 +4,16 @@
     <div clas="container">
         <div class="row">
         
-            <div class="col-lg-2"></div>
+            <div class="col-lg-2">
+            </div>
             <div class="col-lg-8">
             <h1 class="my-3">{{datos.title}}</h1><hr>
                 {% for element in entradas %}
                     <h2>{{element.title|safe}}</h2>
                     <p>{{element.summary|safe}}</p>
                     <a href="{{element.link}}" class="btn btn-primary">Leer más</a>
+                {% empty %}
+                    <p>Sin datos, comprueba tu fuente.  :(</p>
                 {% endfor %}
             </div>
             <div class="col-lg-2"></div>

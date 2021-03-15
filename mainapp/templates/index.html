@@ -1,44 +1,48 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    {% if messages %}
-       {% for message in messages %}
-            <div class="alert alert-success">{{message}}</div>
-       {% endfor %} 
-    {% endif %}
     
     <div class="container">
         <div class="row">
             {% if user.email %}
                 <div class="col-lg-2 my-5">
-                    <h3>Mis Sitios</h3>
-                    <ul>
-                        {% for dato in datos %}
-                            <li><a href="{% url 'detail' dato.id %}">{{dato.title}}</a></li>
-                        {% endfor %}
-                    </ul>
+                    {% include 'bar.html' %}
                 </div>
                 <div class=" my-5 col-lg-6" style="">
-                {% for dato in datos %}
-                    <div class="accordion" id="accordionExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="heading{{dato.id}}">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{dato.id}}" aria-expanded="true" aria-controls="collapse{{dato.id}}">
-                                <strong>{{dato.title}}</strong>
-                            </button>
-                            </h2>
-                            <div id="collapse{{dato.id}}" class="accordion-collapse collapse show" aria-labelledby="heading{{dato.id}}" data-bs-parent="#accordionExample">
-                                {% for data in dato.respuesta %}
-                                    <div class="accordion-body">
-                                        <h5 class="card-title">{{data.title}}</h5>
-                                        <p class="card-text">{{data.summary|safe}}</p>
-                                        <a href="{{data.link}}" class="btn btn-primary">Leer más</a>
-                                    </div>
-                                {% endfor %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success">{{message}}</div>
+                    {% endfor %}
+                {% endif %}
+                    {% for dato in datos %}
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading{{dato.id}}">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{dato.id}}" aria-expanded="true" aria-controls="collapse{{dato.id}}">
+                                    <strong>{{dato.title}}</strong>
+                                </button>
+                                </h2>
+                                <div id="collapse{{dato.id}}" class="accordion-collapse collapse show" aria-labelledby="heading{{dato.id}}" data-bs-parent="#accordionExample">
+                                    {% if dato.isError %}  
+                                          
+                                            <div class="accordion-body">
+                                                    <h5 class="card-title">{{dato.error}}</h5>
+                                                    <p class="card-text"> - - </p>
+                                            </div>
+                                        {% else %}
+                                            {% for data in dato.respuesta %}
+                                                <div class="accordion-body">
+                                                    <h5 class="card-title">{{data.title}}</h5>
+                                                    <p class="card-text">{{data.summary|safe}}</p>
+                                                    <a href="{{data.link}}" class="btn btn-primary">Leer más</a>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                    
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
                 </div>
                 <div class="col-lg-3">
                     <div class="my-5 wrapp">

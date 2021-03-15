@@ -1,0 +1,6 @@
+    <h3>Mis Sitios</h3>
+        <ul>
+            {% for dato in datos %}
+                <li><a href="{% url 'detail' dato.id %}">{{dato.title}}</a></li>
+            {% endfor %}
+        </ul>

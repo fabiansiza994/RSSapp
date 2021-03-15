@@ -8,7 +8,6 @@ from mainapp.models import CreateRss
 import feedparser
 
 # Create your views here.
-
 def index(request):
     register_form = RegisterForm(request.POST)
     if register_form.is_valid():
@@ -17,13 +16,28 @@ def index(request):
     datosdb = CreateRss.objects.filter(public=True)
     respuestadata = {}
     for i in range(len(datosdb)):
-        respuesta = feedparser.parse(datosdb[i].url)
-        datosdb[i].respuesta = respuesta.entries
-    
+        con = 0
+        while True:
+            try:
+                respuesta = feedparser.parse(datosdb[i].url)
+                print(respuesta['feed']['title'])
+                datosdb[i].respuesta = respuesta.entries
+                datosdb[i].isError = False
+                break
+            except Exception as e:
+                con = con+1
+                error = "A ocurrido un error al cargrar el feed"
+                datosdb[i].isError = True
+                datosdb[i].error = error
+                if con >= 3:
+                    break
+
     return render(request, 'index.html',{
         'register_form':register_form,
-        'datos':datosdb
+        'datos':datosdb,
+        'error':error
         })
+
 
 @login_required(login_url="login")
 def detail(request, id):
@@ -80,14 +94,8 @@ def save_rss(request):
         )
 
         Rss.save()
-        return HttpResponse(f"Se guardo el RSS {title} {url}")
+        messages.success(request, 'RSS guardado!!')
+        return redirect('index')
     else:
-        return HttpResponse("Error al guardar")
-
-    return HttpResponse(f"llegue")
-
-# def listar_rss(request):
-#     rss = CreateRss.objects.all()
-#     render(request, 'index.html',{
-#         'rss':rss
-#     })
+        messages.warning(request, 'Error al guardar!!')
+        return redirect('index')
