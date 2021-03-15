@@ -1,11 +1,12 @@
 # RSSapp
-App for administration of RSS
+###############################
+#App for administration of RSS
 
-How to install
+# How to install
 - you need Django: 
   pip install Django \n
-- Run server
+# Run server
   py manage.py runserver\n
-Necessary libraries
+# Necessary libraries
 ->feedparser:
   pip install feedparser
