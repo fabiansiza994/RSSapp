@@ -25,5 +25,6 @@ urlpatterns = [
     path('login/', views.login_page, name="login"),
     path('logout/', views.logout_user, name="logout"),
     path('rss/', views.save_rss, name="rss"),
-    path('detail/<int:id>', views.detail, name="detail")
+    path('detail/<int:id>', views.detail, name="detail"),
+    path('delete/<int:id>', views.delete_rss, name="delete")
 ]

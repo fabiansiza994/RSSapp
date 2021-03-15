@@ -30,6 +30,7 @@ def index(request):
                 print(respuesta['feed']['title'])
                 datosdb[i].respuesta = respuesta.entries
                 datosdb[i].isError = False
+                error = ""
                 break
             except Exception as e:
                 archivo.write("** A ocurrido un error: "+type(e).__name__+" "+str(now)+"\n")
@@ -107,3 +108,10 @@ def save_rss(request):
     else:
         messages.warning(request, 'Error al guardar!!')
         return redirect('index')
+
+def delete_rss(request, id):
+    rss = CreateRss.objects.get(id=id)  
+    rss.delete()
+    messages.success(request, 'RSS Eliminado!!')
+    return redirect('index')
+

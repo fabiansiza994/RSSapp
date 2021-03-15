@@ -1,6 +1,9 @@
     <h3>Mis Sitios</h3>
         <ul>
             {% for dato in datos %}
-                <li><a href="{% url 'detail' dato.id %}">{{dato.title}}</a></li>
+                <li>
+                    <a href="{% url 'detail' dato.id %}">{{dato.title}}</a>
+                    <span><a href="{% url 'delete' dato.id %}" style="display:block" class="btn btn-danger btn-xs">Eliminar</a></span>
+                </li>
             {% endfor %}
         </ul>
