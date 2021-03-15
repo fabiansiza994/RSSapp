@@ -4,9 +4,9 @@
 
 # How to install
 - you need Django: 
-  pip install Django \n
+  pip install Django
 # Run server
-- py manage.py runserver\n
+- py manage.py runserver
 # Necessary libraries
 ->feedparser:
 - pip install feedparser
