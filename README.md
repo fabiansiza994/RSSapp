@@ -1,6 +1,6 @@
 # RSSapp
-###############################
-#App for administration of RSS
+
+# App for administration of RSS
 
 # How to install
 - you need Django: 
