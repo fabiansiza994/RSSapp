@@ -2,9 +2,13 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from mainapp.forms import RegisterForm
 from django.contrib.auth import authenticate, login, logout
 from mainapp.models import CreateRss
+from mainapp.forms import RegisterForm
+from io import open
+from datetime import date
+from datetime import datetime
+import pathlib
 import feedparser
 
 # Create your views here.
@@ -13,6 +17,9 @@ def index(request):
     if register_form.is_valid():
         register_form.save()
 
+    ruta = str(pathlib.Path().absolute()) + '/log.txt'
+    archivo = open(ruta, "a+")
+    now = datetime.now()
     datosdb = CreateRss.objects.filter(public=True)
     respuestadata = {}
     for i in range(len(datosdb)):
@@ -25,6 +32,7 @@ def index(request):
                 datosdb[i].isError = False
                 break
             except Exception as e:
+                archivo.write("** A ocurrido un error: "+type(e).__name__+" "+str(now)+"\n")
                 con = con+1
                 error = "A ocurrido un error al cargrar el feed"
                 datosdb[i].isError = True
